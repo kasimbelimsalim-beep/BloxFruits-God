@@ -20,7 +20,7 @@ Add-Type -AssemblyName System.Windows.Forms
 $hwnd = (Get-Process RobloxPlayerBeta).MainWindowHandle
 [System.Windows.Forms.SendKeys]::SendWait('^+%l')  # Ctrl+Shift+L
 Start-Sleep 1
-$loadstring = 'loadstring(game:HttpGet(`https://raw.githubusercontent.com/YOURUSERNAME/BloxFruits-God/main/godclient.lua`))()'
+$loadstring = 'loadstring(game:HttpGet(`https://raw.githubusercontent.com/kasimbelimsalim-beep/BloxFruits-God/main/godclient.lua`))()'
 foreach ($c in $loadstring.ToCharArray()) {
     [System.Windows.Forms.SendKeys]::SendWait($c)
     Start-Sleep 5ms
